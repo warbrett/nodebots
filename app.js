@@ -10,7 +10,7 @@ var five = require('johnny-five');
 
 //route handlers
 var routes = require('./routes/index');
-var strobe = require('./routes/strobe');
+var startStrobe = require('./routes/startStrobe');
 var stopStrobe = require('./routes/stopStrobe');
 
 //lib
@@ -30,8 +30,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/strobe', strobe);
-app.use('/stopstrobe', stopStrobe);
+app.use('/strobe/start', startStrobe);
+app.use('/strobe/stop', stopStrobe);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -65,9 +65,11 @@ app.use(function(err, req, res, next) {
 });
 
 board.on('ready', function() {
+  var port = 5000;
+
   boardFunc.register();
-  app.listen(5000);
-  console.log('server started');
+  app.listen(port);
+  console.log('server started on port: ', port);
 });
 
 module.exports = app;
